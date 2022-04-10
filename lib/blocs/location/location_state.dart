@@ -2,24 +2,24 @@ part of 'location_bloc.dart';
 
 class LocationState extends Equatable {
   final bool followingUser;
-  final LatLng? lastKnowLoction;
+  final LatLng? lastKnowLocation;
   final List<LatLng> myLocationHistory;
 
   const LocationState(
-      {this.followingUser = false, this.lastKnowLoction, myLocationHistory})
+      {this.followingUser = false, this.lastKnowLocation, myLocationHistory})
       : myLocationHistory = myLocationHistory ?? const [];
 
   LocationState copyWith(
           {bool? followingUser,
-          LatLng? lastKnowLoction,
+          LatLng? lastKnowLocation,
           List<LatLng>? myLocationHistory}) =>
       LocationState(
         followingUser: followingUser ?? this.followingUser,
-        lastKnowLoction: lastKnowLoction ?? this.lastKnowLoction,
+        lastKnowLocation: lastKnowLocation ?? lastKnowLocation,
         myLocationHistory: myLocationHistory ?? this.myLocationHistory,
       );
 
   @override
   List<Object?> get props =>
-      [followingUser, lastKnowLoction, myLocationHistory];
+      [followingUser, lastKnowLocation, myLocationHistory];
 }

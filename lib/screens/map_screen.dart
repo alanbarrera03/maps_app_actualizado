@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:maps_app_actualizado/blocs/blocs.dart';
+import 'package:maps_app_actualizado/views/views.dart';
+import 'package:maps_app_actualizado/widgets/btn_toggle_user_route.dart';
+import 'package:maps_app_actualizado/widgets/widgets.dart';
 
 class MapsScreen extends StatefulWidget {
   const MapsScreen({Key? key}) : super(key: key);
@@ -31,16 +35,42 @@ class _MapsScreenState extends State<MapsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body:
-        BlocBuilder<LocationBloc, LocationState>(builder: (context, state) {
-      if (state.lastKnowLoction == null) {
-        return const Center(child: Text('Espere por favor...'));
-      }
+    return Scaffold(
+      body: BlocBuilder<LocationBloc, LocationState>(
+          builder: (context, locationState) {
+        if (locationState.lastKnowLocation == null) {
+          return const Center(child: Text('Espere por favor...'));
+        }
 
-      final CameraPosition initialCameraPosition =
-          CameraPosition(target: state.lastKnowLoction!, zoom: 15);
+        return BlocBuilder<MapBloc, MapState>(
+          builder: (context, mapState) {
+            Map<String, Polyline> polylines = Map.from(mapState.polylines);
 
-      return GoogleMap(initialCameraPosition: initialCameraPosition);
-    }));
+            if (!mapState.showMyRoute) {
+              polylines.removeWhere((key, value) => key == 'myRoute');
+            }
+
+            return SingleChildScrollView(
+              child: Stack(
+                children: [
+                  MapView(
+                    initialLocation: locationState.lastKnowLocation!,
+                    polylines: polylines.values.toSet(),
+                  ),
+                  const SearchBar()
+                ],
+              ),
+            );
+          },
+        );
+      }),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton:
+          Column(mainAxisAlignment: MainAxisAlignment.end, children: const [
+        BtnToggleUserRoute(),
+        BtnFollowUser(),
+        BtnCurrentLocation(),
+      ]),
+    );
   }
 }

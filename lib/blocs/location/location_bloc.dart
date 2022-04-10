@@ -19,7 +19,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
     on<OnNewUserLocationEvent>((event, emit) {
       emit(state.copyWith(
-          lastKnowLoction: event.newLocation,
+          lastKnowLocation: event.newLocation,
           myLocationHistory: [...state.myLocationHistory, event.newLocation]));
     });
   }
@@ -42,7 +42,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   void stopFollowingUser() {
     positionStream?.cancel();
     add(OnStopFollowUser());
-    print('stopFollowingUser');
+    // print('stopFollowingUser');
   }
 
   @override
