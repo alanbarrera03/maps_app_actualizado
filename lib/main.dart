@@ -12,6 +12,7 @@ void main() {
     BlocProvider(
         create: (context) =>
             MapBloc(locationBloc: BlocProvider.of<LocationBloc>(context))),
+    BlocProvider(create: (context) => LocationBloc()),
   ], child: const MapsApp()));
 }
 
@@ -24,5 +25,6 @@ class MapsApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Material App',
         home: LoadingScreen());
+    // home: TestMarkerScreen());
   }
 }
